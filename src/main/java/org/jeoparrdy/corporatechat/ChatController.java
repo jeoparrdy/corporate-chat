@@ -7,6 +7,7 @@ import org.jeoparrdy.corporatechat.repos.UserRepository;
 import org.jeoparrdy.corporatechat.response.AddMessageResponse;
 import org.jeoparrdy.corporatechat.response.AuthResponse;
 import org.jeoparrdy.corporatechat.response.MessageResponse;
+import org.jeoparrdy.corporatechat.response.UsersResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +64,15 @@ public class ChatController {
     @GetMapping(path = "/api/users")
     public HashMap<String, List> getUsers(){
         Iterable<User> users = userRepository.findAll();
-        return null;
+        ArrayList<UsersResponse> usersList = new ArrayList<>();
+        for (User user:users){
+            UsersResponse userItem = new UsersResponse();
+            userItem.setName(user.getName());
+            usersList.add(userItem);
+        }
+        HashMap<String, List> response = new HashMap<>();
+        response.put("users",usersList);
+        return response;
     }
 
     @PostMapping(path="/api/messages")
@@ -85,7 +94,7 @@ public class ChatController {
         return response;
     }
     @GetMapping(path = "/api/messages")
-    public  List<MessageResponse> getMessages(){
+    public HashMap<String, List> getMessages(){
 
         ArrayList<MessageResponse> messagesList = new ArrayList<>();
         Iterable<Message> messages= messageRepository.findAll();
@@ -97,7 +106,10 @@ public class ChatController {
             messageItem.setText(message.getMessage());
             messagesList.add(messageItem);
         }
-
-        return messagesList;
+        HashMap<String, List> response = new HashMap<>();
+        response.put("messages",messagesList);
+        return response;
     }
+
+
 }

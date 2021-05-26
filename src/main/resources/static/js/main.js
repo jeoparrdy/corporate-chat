@@ -3,8 +3,8 @@ $(function(){
     var userName = 'User';
 
     let initChat = function(){
-        //loadUsers();
-         //alert('yes');
+        loadUsers();
+        loadMessages();
     };
 
 
@@ -14,8 +14,8 @@ $(function(){
             let users = response.users;
             let usersList = $('.users-list');
             for(let i in users){
-                let userItem = $('<div class="user-item"></div>');
-                userItem.text(users[i].name);
+                let userItem = $('<div class="user-item">'+ users[i].name+'</div>');
+                //userItem.text(users[i].name);
                 usersList.append(userItem);
             }
         })
