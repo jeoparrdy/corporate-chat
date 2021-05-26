@@ -7,6 +7,8 @@ $(function(){
          //alert('yes');
     };
 
+
+
     let loadUsers = function (){
         $.get('/api/users', function (response){
             let users = response.users;
@@ -17,6 +19,18 @@ $(function(){
                 usersList.append(userItem);
             }
         })
+    }
+
+    let loadMessages = function (){
+        let messagesList = $('.messages-list');
+        $.get('/api/messages', function(response){
+            let messages = response.messages;
+            for (let i in messages){
+                let messageItem = $('<div class="message"><b>'+ messages[i].time +"&nbsp;" +messages[i].name+': </b> ' + messages[i].text +'</div>');
+                messagesList.append(messageItem);
+            }
+
+        });
     }
 
     let authUser = function (){

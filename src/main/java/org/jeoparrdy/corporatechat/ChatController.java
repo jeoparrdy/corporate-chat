@@ -6,6 +6,7 @@ import org.jeoparrdy.corporatechat.repos.MessageRepository;
 import org.jeoparrdy.corporatechat.repos.UserRepository;
 import org.jeoparrdy.corporatechat.response.AddMessageResponse;
 import org.jeoparrdy.corporatechat.response.AuthResponse;
+import org.jeoparrdy.corporatechat.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -81,5 +83,21 @@ public class ChatController {
         response.setResult(true);
         response.setTime(formatter.format(time));
         return response;
+    }
+    @GetMapping(path = "/api/messages")
+    public  List<MessageResponse> getMessages(){
+
+        ArrayList<MessageResponse> messagesList = new ArrayList<>();
+        Iterable<Message> messages= messageRepository.findAll();
+
+        for (Message message: messages){
+            MessageResponse messageItem = new MessageResponse();
+            messageItem.setName(message.getUser().getName());
+            messageItem.setTime(formatter.format(message.getTime()));
+            messageItem.setText(message.getMessage());
+            messagesList.add(messageItem);
+        }
+
+        return messagesList;
     }
 }
